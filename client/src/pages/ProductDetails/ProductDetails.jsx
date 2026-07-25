@@ -60,12 +60,13 @@ function ProductDetails() {
     <section className="bg-slate-950 min-h-screen py-24">
       <Container>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+        <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
 
           <ProductImage />
 
           <ProductInfo
             product={product}
+            quantity={quantity}
             quantitySelector={
               <QuantitySelector
                 quantity={quantity}
