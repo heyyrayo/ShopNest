@@ -1,8 +1,14 @@
+import AuthLayout from "../../components/auth/AuthLayout";
+import RegisterForm from "../../components/auth/RegisterForm";
+
 function Register() {
   return (
-    <div>
-      <h1>Register Page</h1>
-    </div>
+    <AuthLayout
+      title="Create Account"
+      subtitle="Join ShopNest and start shopping smarter."
+    >
+      <RegisterForm />
+    </AuthLayout>
   );
 }
 

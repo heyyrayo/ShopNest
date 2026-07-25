@@ -1,8 +1,14 @@
+import AuthLayout from "../../components/auth/AuthLayout";
+import LoginForm from "../../components/auth/LoginForm";
+
 function Login() {
   return (
-    <div>
-      <h1>Login Page</h1>
-    </div>
+    <AuthLayout
+      title="Welcome Back"
+      subtitle="Sign in to continue shopping with ShopNest."
+    >
+      <LoginForm />
+    </AuthLayout>
   );
 }
 
