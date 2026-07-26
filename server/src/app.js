@@ -1,12 +1,14 @@
+const productRoutes = require("./routes/productRoutes");
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
 const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 
-/* ---------------------------- Middleware ---------------------------- */
+/* -------------------- Middleware -------------------- */
 
 app.use(cors());
 
@@ -16,18 +18,21 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(cookieParser());
 
-/* ------------------------------ Routes ------------------------------ */
+/* ---------------------- Routes ---------------------- */
 
 app.get("/", (req, res) => {
   res.status(200).json({
     success: true,
-    message: "Welcome to ShopNest API 🚀",
+    message: "ShopNest Backend Running 🚀",
   });
 });
 
 app.use("/api/auth", authRoutes);
 
-/* --------------------------- 404 Handler ---------------------------- */
+app.use("/api/users", userRoutes);
+app.use("/api/products", productRoutes);
+
+/* ------------------- 404 Handler -------------------- */
 
 app.use((req, res) => {
   res.status(404).json({

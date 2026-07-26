@@ -1,20 +1,21 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 
 import Container from "../../components/ui/Container";
 import ProductImage from "../../components/product-details/ProductImage";
 import ProductInfo from "../../components/product-details/ProductInfo";
 import QuantitySelector from "../../components/product-details/QuantitySelector";
-import RelatedProducts from "../../components/product-details/RelatedProducts";
 
-import { products } from "../../data/products";
+import useProduct from "../../hooks/useProduct";
 
 function ProductDetails() {
   const { id } = useParams();
 
-  const product = useMemo(() => {
-    return products.find((item) => item.id === Number(id));
-  }, [id]);
+  const {
+    product,
+    loading,
+    error,
+  } = useProduct(id);
 
   const [quantity, setQuantity] = useState(1);
 
@@ -30,31 +31,35 @@ function ProductDetails() {
     }
   };
 
-  if (!product) {
+  if (loading) {
     return (
-      <section className="bg-slate-950 min-h-screen py-24">
-        <Container>
-          <div className="rounded-3xl border border-slate-800 bg-slate-900 py-24 text-center">
-            <h2 className="text-4xl font-bold text-white">
-              Product Not Found
-            </h2>
-
-            <p className="mt-4 text-slate-400">
-              The requested product does not exist.
-            </p>
-          </div>
-        </Container>
+      <section className="bg-slate-950 min-h-screen flex items-center justify-center">
+        <h2 className="text-white text-3xl font-bold">
+          Loading Product...
+        </h2>
       </section>
     );
   }
 
-  const relatedProducts = products
-    .filter(
-      (item) =>
-        item.category === product.category &&
-        item.id !== product.id
-    )
-    .slice(0, 4);
+  if (error) {
+    return (
+      <section className="bg-slate-950 min-h-screen flex items-center justify-center">
+        <h2 className="text-red-500 text-3xl font-bold">
+          {error}
+        </h2>
+      </section>
+    );
+  }
+
+  if (!product) {
+    return (
+      <section className="bg-slate-950 min-h-screen flex items-center justify-center">
+        <h2 className="text-white text-3xl font-bold">
+          Product Not Found
+        </h2>
+      </section>
+    );
+  }
 
   return (
     <section className="bg-slate-950 min-h-screen py-24">
@@ -62,7 +67,7 @@ function ProductDetails() {
 
         <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
 
-          <ProductImage />
+          <ProductImage product={product} />
 
           <ProductInfo
             product={product}
@@ -77,12 +82,6 @@ function ProductDetails() {
           />
 
         </div>
-
-        {relatedProducts.length > 0 && (
-          <RelatedProducts
-            products={relatedProducts}
-          />
-        )}
 
       </Container>
     </section>

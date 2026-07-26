@@ -8,9 +8,11 @@ import SearchBar from "../../components/products/SearchBar";
 import ProductFilter from "../../components/products/ProductFilter";
 import SortDropdown from "../../components/products/SortDropdown";
 
-import { products } from "../../data/products";
+import useProducts from "../../hooks/useProducts";
 
 function Products() {
+  const { products, loading, error } = useProducts();
+
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [sortBy, setSortBy] = useState("newest");
@@ -51,7 +53,27 @@ function Products() {
     }
 
     return filtered;
-  }, [search, category, sortBy]);
+  }, [products, search, category, sortBy]);
+
+  if (loading) {
+    return (
+      <section className="bg-slate-950 min-h-screen flex items-center justify-center">
+        <h2 className="text-white text-2xl font-semibold">
+          Loading Products...
+        </h2>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="bg-slate-950 min-h-screen flex items-center justify-center">
+        <h2 className="text-red-500 text-2xl font-semibold">
+          {error}
+        </h2>
+      </section>
+    );
+  }
 
   return (
     <section className="bg-slate-950 min-h-screen py-24">

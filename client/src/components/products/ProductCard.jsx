@@ -5,7 +5,7 @@ import Card from "../ui/Card";
 
 function ProductCard({ product }) {
   return (
-    <Link to={`/products/${product.id}`} className="block">
+    <Link to={`/products/${product._id}`} className="block">
       <Card className="overflow-hidden h-full">
 
         {/* Product Image */}
