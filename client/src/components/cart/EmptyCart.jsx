@@ -13,11 +13,13 @@ function EmptyCart() {
         Looks like you haven't added any products yet.
       </p>
 
-      <div className="mt-8 flex justify-center">
-        <Button to="/products">
+      <Link to="/products">
+
+        <Button className="mt-8">
           Continue Shopping
         </Button>
-      </div>
+
+      </Link>
 
     </div>
   );

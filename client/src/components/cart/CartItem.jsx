@@ -1,65 +1,82 @@
 import Button from "../ui/Button";
+import useCart from "../../hooks/useCart";
 
-function CartItem({
-  item,
-  increaseQuantity,
-  decreaseQuantity,
-  removeFromCart,
-}) {
+function CartItem({ item }) {
+  const {
+    increaseQuantity,
+    decreaseQuantity,
+    removeFromCart,
+  } = useCart();
+
   return (
-    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">
-      <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-        {/* Product Details */}
+    <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
+
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+
+        {/* Product Info */}
+
         <div>
-          <p className="text-sm text-cyan-400">
+
+          <p className="text-cyan-400 text-sm">
             {item.category}
           </p>
 
-          <h3 className="mt-2 text-2xl font-semibold text-white">
+          <h2 className="mt-2 text-2xl font-bold text-white">
             {item.name}
-          </h3>
+          </h2>
 
-          <p className="mt-2 text-slate-400">
+          <p className="mt-3 text-slate-400">
+            {item.description}
+          </p>
+
+        </div>
+
+        {/* Price & Quantity */}
+
+        <div className="text-right">
+
+          <p className="text-cyan-400 text-2xl font-bold">
             ₹{item.price.toLocaleString()}
           </p>
-        </div>
 
-        {/* Quantity Controls */}
-        <div className="flex items-center gap-4">
-          <button
-            onClick={() => decreaseQuantity(item.id)}
-            className="h-10 w-10 rounded-xl bg-slate-800 text-white transition hover:bg-slate-700"
-          >
-            -
-          </button>
+          {/* Quantity Controls */}
 
-          <span className="w-8 text-center text-lg font-semibold text-white">
-            {item.quantity}
-          </span>
+          <div className="mt-5 flex items-center justify-end gap-3">
 
-          <button
-            onClick={() => increaseQuantity(item.id)}
-            className="h-10 w-10 rounded-xl bg-slate-800 text-white transition hover:bg-slate-700"
-          >
-            +
-          </button>
-        </div>
+            <Button
+              onClick={() => decreaseQuantity(item._id)}
+            >
+              -
+            </Button>
 
-        {/* Price & Remove */}
-        <div className="text-right">
-          <p className="text-2xl font-bold text-cyan-400">
-            ₹{(item.price * item.quantity).toLocaleString()}
+            <span className="text-xl font-semibold text-white w-8 text-center">
+              {item.quantity}
+            </span>
+
+            <Button
+              onClick={() => increaseQuantity(item._id)}
+            >
+              +
+            </Button>
+
+          </div>
+
+          <p className="mt-5 text-yellow-400 font-semibold">
+            Subtotal : ₹
+            {(item.price * item.quantity).toLocaleString()}
           </p>
 
-          <Button
-            variant="danger"
-            className="mt-4"
-            onClick={() => removeFromCart(item.id)}
-          >
-            Remove
-          </Button>
         </div>
+
       </div>
+
+      <Button
+        className="mt-8"
+        onClick={() => removeFromCart(item._id)}
+      >
+        Remove
+      </Button>
+
     </div>
   );
 }

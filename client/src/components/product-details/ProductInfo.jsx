@@ -1,5 +1,5 @@
-import Button from "../ui/Button";
 import useCart from "../../hooks/useCart";
+import Button from "../ui/Button";
 
 function ProductInfo({
   product,
@@ -10,12 +10,13 @@ function ProductInfo({
 
   const handleAddToCart = () => {
     addToCart(product, quantity);
+
     alert(`${product.name} added to cart!`);
   };
 
   return (
     <div>
-      <p className="text-cyan-400 font-medium">
+      <p className="text-cyan-400 text-sm uppercase tracking-wider">
         {product.category}
       </p>
 
@@ -23,23 +24,21 @@ function ProductInfo({
         {product.name}
       </h1>
 
-      <p className="mt-4 text-yellow-400">
-        ★ {product.rating} ({product.reviews} Reviews)
-      </p>
-
-      <p className="mt-8 text-4xl font-bold text-cyan-400">
-        ₹{product.price.toLocaleString()}
-      </p>
-
-      <p className="mt-8 leading-relaxed text-slate-400">
+      <p className="mt-6 text-slate-400 leading-8">
         {product.description}
       </p>
 
       <div className="mt-8">
-        <h3 className="mb-4 font-semibold text-white">
-          Quantity
-        </h3>
+        <p className="text-4xl font-bold text-cyan-400">
+          ₹{product.price.toLocaleString()}
+        </p>
 
+        <p className="mt-2 text-yellow-400">
+          ★ {product.rating}
+        </p>
+      </div>
+
+      <div className="mt-10">
         {quantitySelector}
       </div>
 
@@ -48,7 +47,7 @@ function ProductInfo({
         className="mt-8"
         onClick={handleAddToCart}
       >
-        Add to Cart
+        Add To Cart
       </Button>
     </div>
   );
