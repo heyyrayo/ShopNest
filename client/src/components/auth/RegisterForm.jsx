@@ -3,11 +3,16 @@ import { Link, useNavigate } from "react-router-dom";
 
 import Button from "../ui/Button";
 import PasswordInput from "./PasswordInput";
+
 import useAuth from "../../hooks/useAuth";
+import { registerUser } from "../../services/authService";
 
 function RegisterForm() {
   const navigate = useNavigate();
+
   const { register } = useAuth();
+
+  const [loading, setLoading] = useState(false);
 
   const [form, setForm] = useState({
     name: "",
@@ -23,20 +28,36 @@ function RegisterForm() {
     });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (form.password !== form.confirmPassword) {
-      alert("Passwords do not match");
+      alert("Passwords do not match.");
       return;
     }
 
-    register({
-      name: form.name,
-      email: form.email,
-    });
+    setLoading(true);
 
-    navigate("/");
+    try {
+      const response = await registerUser({
+        name: form.name,
+        email: form.email,
+        password: form.password,
+      });
+
+      register(response.token, response.user);
+
+      alert(response.message);
+
+      navigate("/");
+    } catch (error) {
+      alert(
+        error.response?.data?.message ||
+          "Registration failed. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -97,15 +118,15 @@ function RegisterForm() {
           name="confirmPassword"
           value={form.confirmPassword}
           onChange={handleChange}
-          placeholder="Confirm your password"
         />
       </div>
 
       <Button
         type="submit"
         fullWidth
+        disabled={loading}
       >
-        Create Account
+        {loading ? "Creating Account..." : "Create Account"}
       </Button>
 
       <p className="text-center text-slate-400">

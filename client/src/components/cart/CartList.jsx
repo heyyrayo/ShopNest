@@ -8,17 +8,15 @@ function CartList({
 }) {
   return (
     <div className="space-y-6">
-
       {items.map((item) => (
         <CartItem
-          key={item.id}
+          key={item._id}
           item={item}
           increaseQuantity={increaseQuantity}
           decreaseQuantity={decreaseQuantity}
           removeFromCart={removeFromCart}
         />
       ))}
-
     </div>
   );
 }

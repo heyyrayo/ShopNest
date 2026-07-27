@@ -3,11 +3,16 @@ import { Link, useNavigate } from "react-router-dom";
 
 import Button from "../ui/Button";
 import PasswordInput from "./PasswordInput";
+
 import useAuth from "../../hooks/useAuth";
+import { loginUser } from "../../services/authService";
 
 function LoginForm() {
   const navigate = useNavigate();
+
   const { login } = useAuth();
+
+  const [loading, setLoading] = useState(false);
 
   const [form, setForm] = useState({
     email: "",
@@ -21,15 +26,27 @@ function LoginForm() {
     });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    login({
-      name: "Amit",
-      email: form.email,
-    });
+    setLoading(true);
 
-    navigate("/");
+    try {
+      const response = await loginUser(form);
+
+      login(response.token, response.user);
+
+      alert(response.message);
+
+      navigate("/");
+    } catch (error) {
+      alert(
+        error.response?.data?.message ||
+          "Login failed. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -68,8 +85,9 @@ function LoginForm() {
       <Button
         type="submit"
         fullWidth
+        disabled={loading}
       >
-        Login
+        {loading ? "Signing In..." : "Login"}
       </Button>
 
       <p className="text-center text-slate-400">
