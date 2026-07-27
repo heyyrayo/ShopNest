@@ -1,10 +1,10 @@
 const Order = require("../models/Order");
 
-// =============================
+// ======================================
 // Create Order
 // POST /api/orders
 // Private
-// =============================
+// ======================================
 
 const createOrder = async (req, res) => {
   try {
@@ -41,11 +41,41 @@ const createOrder = async (req, res) => {
       message: "Order placed successfully.",
       order,
     });
-
   } catch (error) {
-    console.error("========== ORDER ERROR ==========");
+    console.error("========== CREATE ORDER ERROR ==========");
     console.error(error);
-    console.error("=================================");
+    console.error("========================================");
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
+// ======================================
+// Get My Orders
+// GET /api/orders/my
+// Private
+// ======================================
+
+const getMyOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({
+      user: req.user.id,
+    }).sort({
+      createdAt: -1,
+    });
+
+    return res.status(200).json({
+      success: true,
+      count: orders.length,
+      orders,
+    });
+  } catch (error) {
+    console.error("========== GET MY ORDERS ERROR ==========");
+    console.error(error);
+    console.error("=========================================");
 
     return res.status(500).json({
       success: false,
@@ -56,4 +86,5 @@ const createOrder = async (req, res) => {
 
 module.exports = {
   createOrder,
+  getMyOrders,
 };

@@ -6,14 +6,21 @@ const protect = require("../middleware/authMiddleware");
 
 const {
   createOrder,
+  getMyOrders,
 } = require("../controllers/orderController");
 
 // ======================================
-// Create Order
 // POST /api/orders
-// Private Route
+// Create Order
 // ======================================
 
 router.post("/", protect, createOrder);
+
+// ======================================
+// GET /api/orders/my
+// Get Logged-in User Orders
+// ======================================
+
+router.get("/my", protect, getMyOrders);
 
 module.exports = router;
