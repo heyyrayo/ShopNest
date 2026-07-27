@@ -1,9 +1,31 @@
-import { createContext, useMemo, useState } from "react";
+import { createContext, useEffect, useMemo, useState } from "react";
 
 export const CartContext = createContext();
 
 function CartProvider({ children }) {
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState(() => {
+    try {
+      const savedCart = localStorage.getItem("shopnest-cart");
+
+      return savedCart ? JSON.parse(savedCart) : [];
+    } catch (error) {
+      console.error("Failed to load cart:", error);
+      return [];
+    }
+  });
+
+  // ---------------- Persist Cart ----------------
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(
+        "shopnest-cart",
+        JSON.stringify(cartItems)
+      );
+    } catch (error) {
+      console.error("Failed to save cart:", error);
+    }
+  }, [cartItems]);
 
   // ---------------- Add To Cart ----------------
 
