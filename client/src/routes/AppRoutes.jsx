@@ -12,11 +12,18 @@ import Checkout from "../pages/Checkout/Checkout";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import Profile from "../pages/Profile/Profile";
+
 import Admin from "../pages/Admin/Admin";
+import Orders from "../pages/Admin/Orders";
+import OrderDetails from "../pages/Admin/OrderDetails";
+import AdminProducts from "../pages/Admin/Products";
+import CreateProduct from "../pages/Admin/CreateProduct";
+import EditProduct from "../pages/Admin/EditProduct";
 
 function AppRoutes() {
   return (
     <Routes>
+
       <Route element={<MainLayout />}>
 
         <Route
@@ -76,7 +83,53 @@ function AppRoutes() {
           }
         />
 
+        <Route
+          path="/admin/orders"
+          element={
+            <ProtectedRoute>
+              <Orders />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/orders/:id"
+          element={
+            <ProtectedRoute>
+              <OrderDetails />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/products"
+          element={
+            <ProtectedRoute>
+              <AdminProducts />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/products/create"
+          element={
+            <ProtectedRoute>
+              <CreateProduct />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/products/:id/edit"
+          element={
+            <ProtectedRoute>
+              <EditProduct />
+            </ProtectedRoute>
+          }
+        />
+
       </Route>
+
     </Routes>
   );
 }
