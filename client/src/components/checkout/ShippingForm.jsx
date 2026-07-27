@@ -1,30 +1,22 @@
-import { useState } from "react";
-
 import CheckoutInput from "./CheckoutInput";
 
+import useCheckout from "../../hooks/useCheckout";
+
 function ShippingForm() {
-  const [form, setForm] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
-    address: "",
-    city: "",
-    state: "",
-    zipCode: "",
-    country: "",
-  });
+  const {
+    shippingInfo,
+    updateShippingInfo,
+  } = useCheckout();
 
   const handleChange = (event) => {
-    setForm({
-      ...form,
+    updateShippingInfo({
+      ...shippingInfo,
       [event.target.name]: event.target.value,
     });
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    console.log("Shipping Information:", form);
 
     alert("Shipping information saved successfully!");
   };
@@ -44,7 +36,7 @@ function ShippingForm() {
           label="Full Name"
           name="fullName"
           placeholder="John Doe"
-          value={form.fullName}
+          value={shippingInfo.fullName}
           onChange={handleChange}
         />
 
@@ -53,7 +45,7 @@ function ShippingForm() {
           name="email"
           type="email"
           placeholder="john@example.com"
-          value={form.email}
+          value={shippingInfo.email}
           onChange={handleChange}
         />
 
@@ -61,7 +53,7 @@ function ShippingForm() {
           label="Phone Number"
           name="phone"
           placeholder="+1 555 123 4567"
-          value={form.phone}
+          value={shippingInfo.phone}
           onChange={handleChange}
         />
 
@@ -69,7 +61,7 @@ function ShippingForm() {
           label="City"
           name="city"
           placeholder="New York"
-          value={form.city}
+          value={shippingInfo.city}
           onChange={handleChange}
         />
 
@@ -77,7 +69,7 @@ function ShippingForm() {
           label="State"
           name="state"
           placeholder="New York"
-          value={form.state}
+          value={shippingInfo.state}
           onChange={handleChange}
         />
 
@@ -85,32 +77,28 @@ function ShippingForm() {
           label="ZIP Code"
           name="zipCode"
           placeholder="10001"
-          value={form.zipCode}
+          value={shippingInfo.zipCode}
           onChange={handleChange}
         />
 
         <div className="md:col-span-2">
-
           <CheckoutInput
             label="Address"
             name="address"
             placeholder="123 Main Street"
-            value={form.address}
+            value={shippingInfo.address}
             onChange={handleChange}
           />
-
         </div>
 
         <div className="md:col-span-2">
-
           <CheckoutInput
             label="Country"
             name="country"
-            placeholder="United States"
-            value={form.country}
+            placeholder="India"
+            value={shippingInfo.country}
             onChange={handleChange}
           />
-
         </div>
 
       </div>

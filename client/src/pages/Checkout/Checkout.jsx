@@ -1,13 +1,88 @@
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
 import Container from "../../components/ui/Container";
 import SectionHeader from "../../components/ui/SectionHeader";
 
 import ShippingForm from "../../components/checkout/ShippingForm";
+import OrderSummary from "../../components/checkout/OrderSummary";
+import CheckoutActions from "../../components/checkout/CheckoutActions";
+
+import useCart from "../../hooks/useCart";
+import useCheckout from "../../hooks/useCheckout";
+
+import { createOrder } from "../../services/orderService";
 
 function Checkout() {
+  const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
+
+  const {
+    cartItems,
+    totalPrice,
+    clearCart,
+  } = useCart();
+
+  const {
+    shippingInfo,
+    clearCheckout,
+  } = useCheckout();
+
+  const handlePlaceOrder = async () => {
+    if (cartItems.length === 0) {
+      alert("Your cart is empty.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const itemsPrice = totalPrice;
+      const shippingPrice = 0;
+      const taxPrice = itemsPrice * 0.05;
+      const totalOrderPrice =
+        itemsPrice +
+        shippingPrice +
+        taxPrice;
+
+      const orderItems = cartItems.map((item) => ({
+        product: item._id,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+      }));
+
+      const response = await createOrder({
+        orderItems,
+        shippingAddress: shippingInfo,
+        paymentMethod: "Cash on Delivery",
+        itemsPrice,
+        shippingPrice,
+        taxPrice,
+        totalPrice: totalOrderPrice,
+      });
+
+      alert(response.message);
+
+      clearCart();
+
+      clearCheckout();
+
+      navigate("/");
+    } catch (error) {
+      alert(
+        error.response?.data?.message ||
+          "Failed to place order."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <section className="bg-slate-950 min-h-screen py-24">
       <Container>
-
         <SectionHeader
           badge="Checkout"
           title="Complete Your"
@@ -16,83 +91,19 @@ function Checkout() {
         />
 
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-3">
-
-          {/* Shipping Form */}
-
           <div className="lg:col-span-2">
             <ShippingForm />
-          </div>
 
-          {/* Order Summary */}
+            <CheckoutActions
+              onPlaceOrder={handlePlaceOrder}
+              loading={loading}
+            />
+          </div>
 
           <div>
-
-            <div className="rounded-2xl border border-cyan-500/20 bg-slate-900 p-8">
-
-              <h2 className="text-3xl font-bold text-white">
-                Order Summary
-              </h2>
-
-              <div className="mt-6 space-y-4">
-
-                <div className="flex justify-between">
-
-                  <span className="text-slate-400">
-                    Products
-                  </span>
-
-                  <span className="text-white">
-                    Coming Soon
-                  </span>
-
-                </div>
-
-                <div className="flex justify-between">
-
-                  <span className="text-slate-400">
-                    Shipping
-                  </span>
-
-                  <span className="text-white">
-                    —
-                  </span>
-
-                </div>
-
-                <div className="flex justify-between">
-
-                  <span className="text-slate-400">
-                    Tax
-                  </span>
-
-                  <span className="text-white">
-                    —
-                  </span>
-
-                </div>
-
-                <hr className="border-slate-700" />
-
-                <div className="flex justify-between">
-
-                  <span className="text-xl font-semibold text-white">
-                    Total
-                  </span>
-
-                  <span className="text-2xl font-bold text-cyan-400">
-                    —
-                  </span>
-
-                </div>
-
-              </div>
-
-            </div>
-
+            <OrderSummary />
           </div>
-
         </div>
-
       </Container>
     </section>
   );

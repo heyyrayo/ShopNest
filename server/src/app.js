@@ -1,10 +1,11 @@
-const productRoutes = require("./routes/productRoutes");
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
+const productRoutes = require("./routes/productRoutes");
+const orderRoutes = require("./routes/orderRoutes");
 
 const app = express();
 
@@ -30,7 +31,10 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 
 app.use("/api/users", userRoutes);
+
 app.use("/api/products", productRoutes);
+
+app.use("/api/orders", orderRoutes);
 
 /* ------------------- 404 Handler -------------------- */
 
