@@ -4,7 +4,7 @@ import useCart from "../../hooks/useCart";
 import useAuth from "../../hooks/useAuth";
 
 function Navbar() {
-  const { cartCount } = useCart();
+  const { totalItems } = useCart();
 
   const {
     user,
@@ -45,9 +45,15 @@ function Navbar() {
 
           <Link
             to="/cart"
-            className="text-slate-300 transition hover:text-cyan-400"
+            className="relative text-slate-300 transition hover:text-cyan-400"
           >
-            Cart ({cartCount})
+            Cart
+
+            {totalItems > 0 && (
+              <span className="absolute -top-3 -right-5 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-cyan-500 px-1 text-xs font-bold text-white">
+                {totalItems}
+              </span>
+            )}
           </Link>
 
         </nav>
