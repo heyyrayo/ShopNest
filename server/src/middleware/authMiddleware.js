@@ -1,12 +1,10 @@
 const jwt = require("jsonwebtoken");
-
 const User = require("../models/User");
 
 const protect = async (req, res, next) => {
   try {
     let token;
 
-    // Authorization: Bearer <token>
     if (
       req.headers.authorization &&
       req.headers.authorization.startsWith("Bearer ")
@@ -41,7 +39,6 @@ const protect = async (req, res, next) => {
   } catch (error) {
     console.error("========== AUTH MIDDLEWARE ERROR ==========");
     console.error(error);
-    console.error("===========================================");
 
     return res.status(401).json({
       success: false,
