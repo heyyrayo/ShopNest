@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import Button from "../ui/Button";
+import ImageUpload from "./ImageUpload";
 
 function ProductForm({
   onSubmit,
@@ -172,20 +173,15 @@ function ProductForm({
         </div>
       </div>
 
-      <div>
-        <label className="mb-2 block text-sm text-slate-300">
-          Image URL
-        </label>
-
-        <input
-          type="text"
-          name="image"
-          value={form.image}
-          onChange={handleChange}
-          placeholder="https://..."
-          className="w-full rounded-xl border border-slate-700 bg-slate-950 px-5 py-3 text-white outline-none focus:border-cyan-500"
-        />
-      </div>
+      <ImageUpload
+        imageUrl={form.image}
+        setImageUrl={(url) =>
+          setForm((previous) => ({
+            ...previous,
+            image: url,
+          }))
+        }
+      />
 
       <label className="flex items-center gap-3 text-white">
         <input

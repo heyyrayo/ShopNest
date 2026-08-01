@@ -25,7 +25,7 @@ export const getOrderById = async (id) => {
 
 export const updateOrderStatus = async (
   id,
-  orderStatus
+ orderStatus
 ) => {
   const response = await api.put(
     `/orders/${id}/status`,
@@ -80,6 +80,25 @@ export const updateProduct = async (
 export const deleteProduct = async (id) => {
   const response = await api.delete(
     `/products/${id}`
+  );
+
+  return response.data;
+};
+
+// ======================================
+// Upload Product Image
+// ======================================
+
+export const uploadProductImage = async (
+  imageFile
+) => {
+  const formData = new FormData();
+
+  formData.append("image", imageFile);
+
+  const response = await api.post(
+    "/upload",
+    formData
   );
 
   return response.data;
